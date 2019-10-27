@@ -3,14 +3,12 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.FileInfo
-import akka.stream.alpakka.googlecloud.storage.scaladsl.GCStorage
 import akka.stream.scaladsl.Source
 import akka.stream.{ActorMaterializer, Materializer}
 import akka.util.ByteString
 
 import scala.concurrent.ExecutionContextExecutor
-import scala.io.StdIn
-
+import java.io.File
 
 object Server {
 
@@ -18,6 +16,9 @@ object Server {
     implicit val system: ActorSystem = ActorSystem("media-server")
     implicit val materializer: ActorMaterializer = ActorMaterializer()
     implicit val executionContext: ExecutionContextExecutor = system.dispatcher
+
+    val file_object = new File("../resources/auth.json")
+
 
     val route = concat(
       path("upload") {
