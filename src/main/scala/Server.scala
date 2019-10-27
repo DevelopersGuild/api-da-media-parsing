@@ -29,6 +29,15 @@ object Server {
             }
           }
         )
+      },
+      path("delete") {
+        concat(
+          delete {
+            parameters(Symbol("url")) { (url) =>
+              complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, url))
+            }
+          }
+        )
       }
     )
 
