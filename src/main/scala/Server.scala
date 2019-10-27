@@ -1,5 +1,5 @@
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.{ActorMaterializer, Materializer}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
@@ -18,7 +18,16 @@ object Server {
         path("upload"){
           concat(
             get {
-              complete(HttpEntity(ContentTypes.`text/html(UTF-8)`,  "<h1>Media Parsing Server</h1>"))
+              complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Media Parsing Server</h1>"))
+            },
+            post {
+              extractRequestContext{ ctx =>
+                implicit val materializer: Materializer = ctx.materializer
+                fileUpload("fileUpload") {
+                  case(metadata, byteSource) =>
+                    
+                }
+              }
             }
           )
         }
