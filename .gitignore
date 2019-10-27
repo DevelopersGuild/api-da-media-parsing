@@ -5,6 +5,7 @@
 ### Custom ###
 target
 .env
+auth.json
 
 ### Clojure ###
 pom.xml
