@@ -4,7 +4,7 @@
 
 ### Custom ###
 target
-
+.env
 
 ### Clojure ###
 pom.xml
