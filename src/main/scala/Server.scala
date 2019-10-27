@@ -10,6 +10,7 @@ import scala.io.StdIn
 
 
 object Server {
+
   def main(args: Array[String]): Unit = {
     implicit val system: ActorSystem = ActorSystem("media-server")
     implicit val materializer: ActorMaterializer = ActorMaterializer()
@@ -18,9 +19,6 @@ object Server {
     val route = concat(
       path("upload") {
         concat(
-          get {
-            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Media Parsing Server</h1>"))
-          },
           post {
             extractRequestContext { ctx =>
               implicit val materializer: Materializer = ctx.materializer
