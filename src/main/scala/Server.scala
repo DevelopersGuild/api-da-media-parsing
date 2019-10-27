@@ -3,6 +3,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.FileInfo
+import akka.stream.alpakka.googlecloud.storage.scaladsl.GCStorage
 import akka.stream.scaladsl.Source
 import akka.stream.{ActorMaterializer, Materializer}
 import akka.util.ByteString
@@ -27,6 +28,7 @@ object Server {
               fileUpload("fileUpload") {
                 case (metadata: FileInfo, file: Source[ByteString, Any]) =>
                   println(file.toString())
+                  val sink = GCStorage.resumableUpload("api-da-test-bucket", metadata.fileName, ContentTypes.`text/plain(UTF-8)`, )
                   complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, metadata.fileName))
               }
             }
