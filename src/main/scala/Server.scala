@@ -8,7 +8,7 @@ import akka.stream.{ActorMaterializer, Materializer}
 import akka.util.ByteString
 
 import scala.concurrent.ExecutionContextExecutor
-import java.io.File
+import scala.io.{ StdIn, Source => ScalaSource }
 
 object Server {
 
@@ -17,7 +17,6 @@ object Server {
     implicit val materializer: ActorMaterializer = ActorMaterializer()
     implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
-    val file_object = new File("../resources/auth.json")
 
 
     val route = concat(
