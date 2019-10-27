@@ -3,7 +3,9 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.FileInfo
+import akka.stream.scaladsl.Source
 import akka.stream.{ActorMaterializer, Materializer}
+import akka.util.ByteString
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.io.StdIn
@@ -23,8 +25,9 @@ object Server {
             extractRequestContext { ctx =>
               implicit val materializer: Materializer = ctx.materializer
               fileUpload("fileUpload") {
-                case (fileInfo: FileInfo, fileStream) =>
-                  complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, fileInfo.fileName))
+                case (metadata: FileInfo, file: Source[ByteString, Any]) =>
+                  println(file.toString())
+                  complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, metadata.fileName))
               }
             }
           }
