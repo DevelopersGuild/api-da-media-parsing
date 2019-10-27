@@ -28,7 +28,6 @@ object Server {
               fileUpload("fileUpload") {
                 case (metadata: FileInfo, file: Source[ByteString, Any]) =>
                   println(file.toString())
-                  val sink = GCStorage.resumableUpload("api-da-test-bucket", metadata.fileName, ContentTypes.`text/plain(UTF-8)`, )
                   complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, metadata.fileName))
               }
             }
