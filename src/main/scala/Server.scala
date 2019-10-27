@@ -1,11 +1,14 @@
+import java.io.InputStream
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.FileInfo
-import akka.stream.scaladsl.Source
+import akka.stream.scaladsl.{Source, StreamConverters}
 import akka.stream.{ActorMaterializer, Materializer}
 import akka.util.ByteString
+import com.google.cloud.storage.{BlobId, BlobInfo, Storage, StorageOptions}
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.io.{BufferedSource, StdIn, Source => ScalaSource}
@@ -20,7 +23,7 @@ object Server {
 //    implicit val authFile: BufferedSource = ScalaSource.fromFile("../resources/auth.json")
 //    authFile.close()
       sys.process.Process("env", None, "GOOGLE_APPLICATION_CREDENTIALS" -> "../resources/auth.json")
-      
+
     val route = concat(
       path("upload") {
         concat(
@@ -29,7 +32,11 @@ object Server {
               implicit val materializer: Materializer = ctx.materializer
               fileUpload("fileUpload") {
                 case (metadata: FileInfo, file: Source[ByteString, Any]) =>
-                  println(file.toString())
+//                  val storage: Storage = StorageOptions.getDefaultInstance.getService
+//                  val bucketName: String = "api-da-test-bucket"
+//                  val blobId = BlobId.of(bucketName, metadata.fileName)
+//                  val blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build
+//                  val blob = storage.create(blobInfo, file) // Byte Array needed for file
                   complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, metadata.fileName))
               }
             }
