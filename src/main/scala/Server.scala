@@ -32,11 +32,12 @@ object Server {
               implicit val materializer: Materializer = ctx.materializer
               fileUpload("fileUpload") {
                 case (metadata: FileInfo, file: Source[ByteString, Any]) =>
-//                  val storage: Storage = StorageOptions.getDefaultInstance.getService
-//                  val bucketName: String = "api-da-test-bucket"
-//                  val blobId = BlobId.of(bucketName, metadata.fileName)
-//                  val blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build
-//                  val blob = storage.create(blobInfo, file) // Byte Array needed for file
+                    println(file.toString().getBytes)
+                  val storage: Storage = StorageOptions.getDefaultInstance.getService
+                  val bucketName: String = "api-da-test-bucket"
+                  val blobId = BlobId.of(bucketName, metadata.fileName)
+                  val blobInfo = BlobInfo.newBuilder(blobId).setContentType("text/plain").build
+                  val blob = storage.create(blobInfo, file.toString().getBytes) // Byte Array needed for file
                   complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, metadata.fileName))
               }
             }
