@@ -8,7 +8,7 @@ import akka.stream.{ActorMaterializer, Materializer}
 import akka.util.ByteString
 
 import scala.concurrent.ExecutionContextExecutor
-import scala.io.{ StdIn, Source => ScalaSource }
+import scala.io.{BufferedSource, StdIn, Source => ScalaSource}
 
 object Server {
 
@@ -17,8 +17,10 @@ object Server {
     implicit val materializer: ActorMaterializer = ActorMaterializer()
     implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
-
-
+//    implicit val authFile: BufferedSource = ScalaSource.fromFile("../resources/auth.json")
+//    authFile.close()
+      sys.process.Process("env", None, "GOOGLE_APPLICATION_CREDENTIALS" -> "../resources/auth.json")
+      
     val route = concat(
       path("upload") {
         concat(
