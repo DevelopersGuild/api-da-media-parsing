@@ -6,7 +6,7 @@
 target
 .env
 auth.json
-/resources/application.conf
+src/main/resources/application.conf
 
 ### Clojure ###
 pom.xml
