@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"io/ioutil"
+	"cloud.google.com/go/storage"
 )
 
 func enableCors(w *http.ResponseWriter) {

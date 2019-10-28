@@ -3,7 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=go,git,vim,linux,macos,emacs,windows,visualstudiocode
 
 ### Custom ###
-
+auth.json
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
