@@ -81,6 +81,27 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, <-pictureURLChannel)
 }
 
+func deleteFile(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	completionChannel := make(chan string)
+	go func() {
+		ctx := context.Background()
+		client, err := storage.NewClient(ctx)
+		bucketName := "api-da-test-bucket"
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		o := client.Bucket(bucketName).Object(object)
+		if err := o.Delete(ctx); err != nil {
+			fmt.Println(err)
+		}
+		completionChannel <- "done"
+	}()
+	fmt.Fprintf(w, <-completionChannel)
+
+}
+
 func setupRoutes() {
 	http.HandleFunc("/upload", uploadFile)
 	http.ListenAndServe(":8080", nil)
