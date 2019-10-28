@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"context"
 	"fmt"
 	"io"
@@ -53,10 +54,22 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
+	// JSON STUFF 
+	jsonFile, err := os.Open("./auth.json")
+	defer jsonFile.Close()
+	jsonByteValue, _ := ioutil.ReadAll(jsonFile)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(jsonByteValue), &result)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	opts := &storage.SignedURLOptions{
 		Expires: time.Date(2025, 12, 22, 0, 0, 0, 0, time.UTC),
 		GoogleAccessID: "api-da-housing-test@crack-producer-252518.iam.gserviceaccount.com",
 		ContentType: handler.Header.Get("Content-Type"),
+		PrivateKey: []byte(result["private_key"].(string)),
 	}
 	url, err := storage.SignedURL(bucketName, handler.Filename, opts)
 	if err != nil {
