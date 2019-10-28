@@ -10,9 +10,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/gorilla/mux"
 	"cloud.google.com/go/storage"
 	"github.com/google/uuid"
+	"github.com/gorilla/mux"
 )
 
 func enableCors(w *http.ResponseWriter) {
@@ -84,6 +84,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 func deleteFile(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
+	params := mux.Vars(r)
 	completionChannel := make(chan string)
 	go func() {
 		ctx := context.Background()
@@ -93,11 +94,11 @@ func deleteFile(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 
-		o := client.Bucket(bucketName).Object(data.imageURL)
+		o := client.Bucket(bucketName).Object(params["url"])
 		if err := o.Delete(ctx); err != nil {
 			fmt.Println(err)
 		}
-		completionChannel <- data.imageURL + " deleted!"
+		completionChannel <- params["url"] + " deleted!"
 	}()
 	fmt.Fprintf(w, <-completionChannel)
 }
