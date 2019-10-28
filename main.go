@@ -21,6 +21,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request){
 		fmt.Println(err)
 	}
 	println(fileBytes)
+	fmt.Fprintf(w, handler.Filename)
 }
 
 func setupRoutes(){
@@ -29,6 +30,5 @@ func setupRoutes(){
 }
 
 func main() {
-	fmt.Println("Hello World")
 	setupRoutes()
 }
