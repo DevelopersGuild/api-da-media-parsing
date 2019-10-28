@@ -70,6 +70,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		GoogleAccessID: "api-da-housing-test@crack-producer-252518.iam.gserviceaccount.com",
 		ContentType: handler.Header.Get("Content-Type"),
 		PrivateKey: []byte(result["private_key"].(string)),
+		Method: "GET",
 	}
 	url, err := storage.SignedURL(bucketName, handler.Filename, opts)
 	if err != nil {
