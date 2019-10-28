@@ -85,11 +85,18 @@ func deleteFile(w http.ResponseWriter, r *http.Request) {
 	type deleteInfo struct {
 		imageURL string `json:"imageURL"`
 	}
-	decoder := json.NewDecoder(r.Body)
-	var data deleteInfo
-	err := decoder.Decode(&data)
+
+	b, err := ioutil.ReadAll(r.Body)
+	defer r.Body.Close()
+
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+	}
+
+	var data deleteInfo
+	err = json.Unmarshal(b, &data)
+	if err != nil {
+		fmt.Println(err)
 	}
 	enableCors(&w)
 	completionChannel := make(chan string)
