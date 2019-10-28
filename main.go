@@ -22,16 +22,21 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	// create gcloud client
 	ctx := context.Background()
 	client, err := storage.NewClient(ctx)
+	bucketName := "api-da-test-bucket"
+	
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	
+
+	r.ParseMultipartForm(10 << 20)
+	file, handler, err := r.FormFile("fileUpload")
 
 	if err != nil {
 		fmt.Println(err)
 	}
-	bucketName := "api-da-test-bucket"
-	r.ParseMultipartForm(10 << 20)
-	file, handler, err := r.FormFile("fileUpload")
-	if err != nil {
-		fmt.Println(err)
-	}
+
 	defer file.Close()
 	// fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
