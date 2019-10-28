@@ -120,8 +120,8 @@ func deleteFile(w http.ResponseWriter, r *http.Request) {
 
 func setupRoutes() {
 	r := mux.NewRouter()
-	r.HandleFunc("/upload", uploadFile)
-	r.HandleFunc("/delete", deleteFile)
+	r.HandleFunc("/upload", uploadFile).Methods("POST")
+	r.HandleFunc("/delete", deleteFile).Methods("DELETE")
 	http.Handle("/", r)
 	http.ListenAndServe(":8080", nil)
 }
