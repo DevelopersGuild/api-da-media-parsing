@@ -83,22 +83,6 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteFile(w http.ResponseWriter, r *http.Request) {
-	type deleteInfo struct {
-		imageURL string `json:"imageURL"`
-	}
-
-	b, err := ioutil.ReadAll(r.Body)
-	defer r.Body.Close()
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	var data deleteInfo
-	err = json.Unmarshal(b, &data)
-	if err != nil {
-		fmt.Println(err)
-	}
 	enableCors(&w)
 	completionChannel := make(chan string)
 	go func() {
