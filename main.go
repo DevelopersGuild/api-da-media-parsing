@@ -23,13 +23,12 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	client, err := storage.NewClient(ctx)
 	bucketName := "api-da-test-bucket"
-	
+
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	
-
+	// parse file from post requests.
 	r.ParseMultipartForm(10 << 20)
 	file, handler, err := r.FormFile("fileUpload")
 
@@ -42,6 +41,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
+	// Writer Object Change
 	objectattrs := storage.ObjectAttrs{
 		ContentType: handler.Header.Get("Content-Type"),
 		Name:        handler.Filename,
