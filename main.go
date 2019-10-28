@@ -1,44 +1,58 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-	"io/ioutil"
-	"cloud.google.com/go/storage"
-	"os"
 	"context"
+	"fmt"
+	"io"
+	"io/ioutil"
+	"net/http"
+	"os"
+
+	"cloud.google.com/go/storage"
 )
 
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
-func uploadFile(w http.ResponseWriter, r *http.Request){
+func uploadFile(w http.ResponseWriter, r *http.Request) {
 	// create gcloud client
 	ctx := context.Background()
-	projectID := "crack-producer-252518"
 	client, err := storage.NewClient(ctx)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	bucketName := "api-da-test-bucket"
 	enableCors(&w)
 	r.ParseMultipartForm(10 << 20)
 	file, handler, err := r.FormFile("fileUpload")
 	if err != nil {
-        fmt.Println(err)
+		fmt.Println(err)
 	}
 	defer file.Close()
 	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
-    fmt.Printf("File Size: %+v\n", handler.Size)
+	fmt.Printf("File Size: %+v\n", handler.Size)
 	fmt.Printf("MIME Header: %+v\n", handler.Header)
 	fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
 		fmt.Println(err)
 	}
 	println(fileBytes)
+	wc := client.Bucket(bucketName).Object(handler.Filename).NewWriter(ctx)
+	if _, err = io.Copy(wc, file); err != nil {
+		fmt.Println(err)
+	}
+	if err := wc.Close(); err != nil {
+		fmt.Println(err)
+	}
+
 	fmt.Fprintf(w, handler.Filename)
 }
 
-func setupRoutes(){
+func setupRoutes() {
 	http.HandleFunc("/upload", uploadFile)
-    http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", nil)
 }
 
 func main() {
