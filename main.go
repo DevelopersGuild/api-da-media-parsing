@@ -94,11 +94,11 @@ func deleteFile(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 
-		o := client.Bucket(bucketName).Object(params["url"])
+		o := client.Bucket(bucketName).Object(params["name"])
 		if err := o.Delete(ctx); err != nil {
 			fmt.Println(err)
 		}
-		completionChannel <- params["url"] + " deleted!"
+		completionChannel <- params["name"] + " deleted!"
 	}()
 	fmt.Fprintf(w, <-completionChannel)
 }
