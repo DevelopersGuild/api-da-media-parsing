@@ -17,7 +17,8 @@ func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
-func uploadFile(w http.ResponseWriter, r *http.Request) {
+func uploadFile(w http.ResponseWriter, r *http.Request) {	
+	enableCors(&w)
 	// create gcloud client
 	ctx := context.Background()
 	client, err := storage.NewClient(ctx)
@@ -26,7 +27,6 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	bucketName := "api-da-test-bucket"
-	enableCors(&w)
 	r.ParseMultipartForm(10 << 20)
 	file, handler, err := r.FormFile("fileUpload")
 	if err != nil {
