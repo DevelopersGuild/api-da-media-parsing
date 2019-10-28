@@ -83,7 +83,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 func deleteFile(w http.ResponseWriter, r *http.Request) {
 	type deleteInfo struct {
-		imageURL string
+		imageURL string `json:imageURL,omitempty`
 	}
 	decoder := json.NewDecoder(r.Body)
 	var data deleteInfo
