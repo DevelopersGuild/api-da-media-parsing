@@ -6,6 +6,10 @@ import (
 	"io/ioutil"
 )
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func uploadFile(w http.ResponseWriter, r *http.Request){
 	r.ParseMultipartForm(10 << 20)
 	file, handler, err := r.FormFile("fileUpload")
@@ -30,5 +34,6 @@ func setupRoutes(){
 }
 
 func main() {
+	fmt.Println("Server running on PORT:8080")
 	setupRoutes()
 }
