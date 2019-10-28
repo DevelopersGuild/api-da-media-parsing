@@ -6,7 +6,7 @@ import (
 )
 
 func uploadFile(w http.ResponseWriter, r *http.Request){
-	fmt.Fprintf(w, "Uploading File")
+
 }
 
 func setupRoutes(){
@@ -16,4 +16,5 @@ func setupRoutes(){
 
 func main() {
 	fmt.Println("Hello World")
+	setupRoutes()
 }
