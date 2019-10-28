@@ -10,6 +10,7 @@ import (
 	"os"
 
 	"cloud.google.com/go/storage"
+	"github.com/google/uuid"
 )
 
 func enableCors(w *http.ResponseWriter) {
@@ -65,18 +66,6 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	pictureURL := "https://storage.googleapis.com/" + bucketName + "/" + handler.Filename
-	// opts := &storage.SignedURLOptions{
-	// 	Expires:        time.Date(2025, 12, 22, 0, 0, 0, 0, time.UTC),
-	// 	GoogleAccessID: result["client_email"].(string),
-	// 	ContentType:    handler.Header.Get("Content-Type"),
-	// 	PrivateKey:     []byte(result["private_key"].(string)),
-	// 	Method:         "GET",
-	// }
-	// url, err := storage.SignedURL(bucketName, handler.Filename, opts)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
 	fmt.Fprintf(w, pictureURL)
 }
 
