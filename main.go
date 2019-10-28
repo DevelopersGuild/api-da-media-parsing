@@ -17,7 +17,7 @@ func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
-func uploadFile(w http.ResponseWriter, r *http.Request) {	
+func uploadFile(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	// create gcloud client
 	ctx := context.Background()
@@ -55,7 +55,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	// JSON STUFF
+	// JSON FOR URL
 	jsonFile, err := os.Open("./auth.json")
 	defer jsonFile.Close()
 	jsonByteValue, _ := ioutil.ReadAll(jsonFile)
