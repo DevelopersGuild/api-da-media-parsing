@@ -41,17 +41,17 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	// Writer Object Change
-	objectattrs := storage.ObjectAttrs{
-		ContentType: handler.Header.Get("Content-Type"),
-		Name:        handler.Filename,
-	}
 	// name uuid generation
 	uniqueID, err := uuid.NewRandom()
 	if err != nil {
 		fmt.Println(err)
 	}
 	uniqueIDString := uniqueID.String()
+	// Writer Object Change
+	objectattrs := storage.ObjectAttrs{
+		ContentType: handler.Header.Get("Content-Type"),
+		Name:        uniqueIDString,
+	}
 	// handler.Filename
 	wc := client.Bucket(bucketName).Object(uniqueIDString).NewWriter(ctx)
 	wc.ObjectAttrs = objectattrs
