@@ -84,7 +84,8 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 func deleteFile(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	params := mux.Vars(r)
+	// params := mux.Vars(r)
+	fileName := r.URL.Query()["name"][0]
 	completionChannel := make(chan string)
 	go func() {
 		ctx := context.Background()
@@ -94,11 +95,11 @@ func deleteFile(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 
-		o := client.Bucket(bucketName).Object(params["name"])
+		o := client.Bucket(bucketName).Object(fileName)
 		if err := o.Delete(ctx); err != nil {
 			fmt.Println(err)
 		}
-		completionChannel <- params["name"] + " deleted!"
+		completionChannel <- fileName + " deleted!"
 	}()
 	fmt.Fprintf(w, <-completionChannel)
 }
