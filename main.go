@@ -11,6 +11,7 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 func uploadFile(w http.ResponseWriter, r *http.Request){
+	enableCors(&w)
 	r.ParseMultipartForm(10 << 20)
 	file, handler, err := r.FormFile("fileUpload")
 	if err != nil {
