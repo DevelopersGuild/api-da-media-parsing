@@ -82,6 +82,15 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteFile(w http.ResponseWriter, r *http.Request) {
+	type deleteInfo struct {
+		imageURL string
+	}
+	decoder := json.NewDecoder(r.Body)
+	var data deleteInfo
+	err := decoder.Decode(&data)
+	if err != nil {
+		panic(err)
+	}
 	enableCors(&w)
 	completionChannel := make(chan string)
 	go func() {
@@ -92,11 +101,11 @@ func deleteFile(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 
-		o := client.Bucket(bucketName).Object(object)
+		o := client.Bucket(bucketName).Object(data.imageURL)
 		if err := o.Delete(ctx); err != nil {
 			fmt.Println(err)
 		}
-		completionChannel <- "done"
+		completionChannel <- data.imageURL + " deleted!"
 	}()
 	fmt.Fprintf(w, <-completionChannel)
 
