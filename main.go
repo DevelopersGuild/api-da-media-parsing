@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+
 	"cloud.google.com/go/storage"
 )
 
@@ -47,18 +48,15 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	// var opts storage.SignedURLOptions
-	// opt.Expires = time.Date(2025, 12, 22, 0, 0, 0, 0, time.UTC)
-	// // opts := *storage.SignedURLOptions{
-	// // 	Expires: time.Date(2025, 12, 22, 0, 0, 0, 0, time.UTC),
-	// // }
-	// url, err := storage.SignedURL(bucketName, handler.Filename, opts)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	
-	
-	fmt.Fprintf(w, handler.Filename)
+	opts := &storage.SignedURLOptions{
+		Expires: time.Date(2025, 12, 22, 0, 0, 0, 0, time.UTC),
+	}
+	url, err := storage.SignedURL(bucketName, handler.Filename, opts)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Fprintf(w, url)
 }
 
 func setupRoutes() {
