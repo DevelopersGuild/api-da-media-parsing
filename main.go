@@ -1,8 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -43,7 +43,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	println(fileBytes)
 	objectattrs := storage.ObjectAttrs{
 		ContentType: handler.Header.Get("Content-Type"),
-		Name: handler.Filename,
+		Name:        handler.Filename,
 	}
 	wc := client.Bucket(bucketName).Object(handler.Filename).NewWriter(ctx)
 	wc.ObjectAttrs = objectattrs
@@ -54,7 +54,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	// JSON STUFF 
+	// JSON STUFF
 	jsonFile, err := os.Open("./auth.json")
 	defer jsonFile.Close()
 	jsonByteValue, _ := ioutil.ReadAll(jsonFile)
@@ -66,11 +66,11 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	opts := &storage.SignedURLOptions{
-		Expires: time.Date(2025, 12, 22, 0, 0, 0, 0, time.UTC),
+		Expires:        time.Date(2025, 12, 22, 0, 0, 0, 0, time.UTC),
 		GoogleAccessID: "api-da-housing-test@crack-producer-252518.iam.gserviceaccount.com",
-		ContentType: handler.Header.Get("Content-Type"),
-		PrivateKey: []byte(result["private_key"].(string)),
-		Method: "GET",
+		ContentType:    handler.Header.Get("Content-Type"),
+		PrivateKey:     []byte(result["private_key"].(string)),
+		Method:         "GET",
 	}
 	url, err := storage.SignedURL(bucketName, handler.Filename, opts)
 	if err != nil {
