@@ -108,7 +108,6 @@ func deleteFile(w http.ResponseWriter, r *http.Request) {
 		completionChannel <- data.imageURL + " deleted!"
 	}()
 	fmt.Fprintf(w, <-completionChannel)
-
 }
 
 func setupRoutes() {
