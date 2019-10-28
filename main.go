@@ -55,7 +55,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		Name:        uniqueIDString + "." + fileExtension,
 	}
 	// handler.Filename
-	wc := client.Bucket(bucketName).Object(uniqueIDString).NewWriter(ctx)
+	wc := client.Bucket(bucketName).Object(uniqueIDString + "." + fileExtension).NewWriter(ctx)
 	wc.ObjectAttrs = objectattrs
 	if _, err = io.Copy(wc, file); err != nil {
 		fmt.Println(err)
