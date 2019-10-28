@@ -113,6 +113,7 @@ func deleteFile(w http.ResponseWriter, r *http.Request) {
 
 func setupRoutes() {
 	http.HandleFunc("/upload", uploadFile)
+	http.HandleFunc("/delete", deleteFile)
 	http.ListenAndServe(":8080", nil)
 }
 
