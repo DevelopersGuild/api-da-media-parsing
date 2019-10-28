@@ -40,7 +40,12 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	println(fileBytes)
+	objectattrs := storage.ObjectAttrs{
+		ContentType: handler.Header.Get("Content-Type"),
+		Name: handler.Filename,
+	}
 	wc := client.Bucket(bucketName).Object(handler.Filename).NewWriter(ctx)
+	wc.ObjectAttrs = objectattrs
 	if _, err = io.Copy(wc, file); err != nil {
 		fmt.Println(err)
 	}
