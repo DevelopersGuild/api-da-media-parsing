@@ -46,7 +46,14 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		ContentType: handler.Header.Get("Content-Type"),
 		Name:        handler.Filename,
 	}
-	wc := client.Bucket(bucketName).Object(handler.Filename).NewWriter(ctx)
+	// name uuid generation
+	uniqueID, err := uuid.NewRandom()
+	if err != nil {
+		fmt.Println(err)
+	}
+	uniqueIDString := uniqueID.String()
+	// handler.Filename
+	wc := client.Bucket(bucketName).Object(uniqueIDString).NewWriter(ctx)
 	wc.ObjectAttrs = objectattrs
 	if _, err = io.Copy(wc, file); err != nil {
 		fmt.Println(err)
@@ -65,7 +72,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	pictureURL := "https://storage.googleapis.com/" + bucketName + "/" + handler.Filename
+	pictureURL := "https://storage.googleapis.com/" + bucketName + "/" + uniqueIDString
 	fmt.Fprintf(w, pictureURL)
 }
 
