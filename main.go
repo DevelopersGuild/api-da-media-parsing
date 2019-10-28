@@ -68,7 +68,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 	opts := &storage.SignedURLOptions{
 		Expires:        time.Date(2025, 12, 22, 0, 0, 0, 0, time.UTC),
-		GoogleAccessID: "api-da-housing-test@crack-producer-252518.iam.gserviceaccount.com",
+		GoogleAccessID: result["client_email"].(string),
 		ContentType:    handler.Header.Get("Content-Type"),
 		PrivateKey:     []byte(result["private_key"].(string)),
 		Method:         "GET",
