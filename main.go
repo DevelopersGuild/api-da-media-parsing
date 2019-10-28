@@ -84,7 +84,6 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 func deleteFile(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	// params := mux.Vars(r)
 	fileName := r.URL.Query()["name"][0]
 	completionChannel := make(chan string)
 	go func() {
