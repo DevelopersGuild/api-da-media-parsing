@@ -36,11 +36,10 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Uploaded File: %+v\n", handler.Filename)
 	fmt.Printf("File Size: %+v\n", handler.Size)
 	fmt.Printf("MIME Header: %+v\n", handler.Header)
-	fileBytes, err := ioutil.ReadAll(file)
+	// fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
 		fmt.Println(err)
 	}
-	println(fileBytes)
 	objectattrs := storage.ObjectAttrs{
 		ContentType: handler.Header.Get("Content-Type"),
 		Name:        handler.Filename,
