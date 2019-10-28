@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"io/ioutil"
 	"cloud.google.com/go/storage"
+	"os"
+	"context"
 )
 
 func enableCors(w *http.ResponseWriter) {
@@ -12,6 +14,10 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 func uploadFile(w http.ResponseWriter, r *http.Request){
+	// create gcloud client
+	ctx := context.Background()
+	projectID := "crack-producer-252518"
+	client, err := storage.NewClient(ctx)
 	enableCors(&w)
 	r.ParseMultipartForm(10 << 20)
 	file, handler, err := r.FormFile("fileUpload")
@@ -36,6 +42,7 @@ func setupRoutes(){
 }
 
 func main() {
+	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "./auth.json")
 	fmt.Println("Server running on PORT:8080")
 	setupRoutes()
 }
