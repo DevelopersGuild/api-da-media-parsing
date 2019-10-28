@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 
 	"cloud.google.com/go/storage"
 	"github.com/google/uuid"
@@ -42,6 +43,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	// name uuid generation
+	fileExtension := strings.Split(handler.Filename, ".")[1]
 	uniqueID, err := uuid.NewRandom()
 	if err != nil {
 		fmt.Println(err)
@@ -50,7 +52,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	// Writer Object Change
 	objectattrs := storage.ObjectAttrs{
 		ContentType: handler.Header.Get("Content-Type"),
-		Name:        uniqueIDString,
+		Name:        uniqueIDString + "." + fileExtension,
 	}
 	// handler.Filename
 	wc := client.Bucket(bucketName).Object(uniqueIDString).NewWriter(ctx)
@@ -72,7 +74,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	pictureURL := "https://storage.googleapis.com/" + bucketName + "/" + uniqueIDString
+	pictureURL := "https://storage.googleapis.com/" + bucketName + "/" + uniqueIDString + "." + fileExtension
 	fmt.Fprintf(w, pictureURL)
 }
 
