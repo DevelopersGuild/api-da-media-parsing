@@ -2,6 +2,9 @@
 # Created by https://www.gitignore.io/api/go,git,vim,linux,macos,emacs,windows,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=go,git,vim,linux,macos,emacs,windows,visualstudiocode
 
+### Custom ###
+
+
 ### Emacs ###
 # -*- mode: gitignore; -*-
 *~
