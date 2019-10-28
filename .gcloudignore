@@ -1,6 +1,0 @@
-Dockerfile
-.git
-.gitignore
-README.md
-go.sum
-go.mod
